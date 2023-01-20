@@ -1,12 +1,14 @@
 const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
 const routers = express.Router();
+
 const console1 = require("../middleware/console1");
 const console2 = require("../middleware/console2");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const uploadSingle = require("../storage/fileUploadSingle");
+const uploadMulti = require("../storage/fileUploadMulti");
 const upload = multer({ dest: "public" });
 
 routers.get("/", console1, (req, res) => {
@@ -23,7 +25,7 @@ routers.post("/", console2, (req, res) => {
   });
 });
 
-routers.use(authMiddleware);
+// routers.use(authMiddleware);
 
 routers.put("/", (req, res) => {
   res.send({
@@ -106,6 +108,19 @@ routers.post("/upload/single", uploadSingle, (req, res) => {
     status: "success",
     msg: "Upload Success",
     file: req.file,
+    urlFile: `${req.protocol}://${req.get("host")}/${req.file.filename}`,
+  });
+});
+
+routers.post("/upload/multi", uploadMulti, (req, res) => {
+  const fileUrl = files.map((file, index) => {
+    return `${req.protocol}:${req.get("host")}/${req.files[index].filename}`;
+  });
+  res.send({
+    status: "success",
+    msg: "Upload Success",
+    file: req.files,
+    url: [fileUrl],
   });
 });
 
