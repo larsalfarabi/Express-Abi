@@ -105,28 +105,22 @@ async function createMateriMulti(req, res) {
     let success = 0;
     let fail = 0;
     let jumlah = payload.length;
-    if (req.role === "Siswa") {
-      return res.status(403).json({
-        status: "error",
-        msg: "Anda tidak memiliki akses karena role anda adalah siswa",
-      });
-    } else {
-      await Promise.all(
-        payload.map(async (item, index) => {
-          try {
-            await materiModel.create({
-              mataPelajaran: item.mataPelajaran,
-              kelas: item.kelas,
-              materi: item.materi,
-              userId: req.id,
-            });
-            success = success + 1;
-          } catch (err) {
-            fail = fail + 1;
-          }
-        })
-      );
-    }
+
+    await Promise.all(
+      payload.map(async (item, index) => {
+        try {
+          await materiModel.create({
+            mataPelajaran: item.mataPelajaran,
+            kelas: item.kelas,
+            materi: item.materi,
+            userId: req.id,
+          });
+          success = success + 1;
+        } catch (err) {
+          fail = fail + 1;
+        }
+      })
+    );
 
     res.status(201).json({
       status: "201",
@@ -153,12 +147,6 @@ async function updateMateri(req, res) {
       });
     }
 
-    if (req.role === "Siswa") {
-      return res.status(400).json({
-        status: "fail",
-        msg: "Anda tidak memiliki akses karena role anda adalah siswa",
-      });
-    }
     if (pelajaran.userId !== req.id) {
       return res.status(400).json({
         status: "fail",
@@ -193,32 +181,26 @@ async function deleteMateriMulti(req, res) {
     let success = 0;
     let fail = 0;
     let jumlah = payload.length;
-    if (req.role === "Siswa") {
-      return res.status(400).json({
-        status: "fail",
-        msg: "Anda tidak memiliki akses karena role anda adalah siswa",
-      });
-    } else {
-      await Promise.all(
-        payload.map(async (item) => {
-          try {
-            const hapus = await materiModel.findOne({
+
+    await Promise.all(
+      payload.map(async (item) => {
+        try {
+          const hapus = await materiModel.findOne({
+            where: { id: item.id },
+          });
+          if (hapus.userId !== req.id) {
+            return (fail = fail + 1);
+          } else {
+            await materiModel.destroy({
               where: { id: item.id },
             });
-            if (hapus.userId !== req.id) {
-              return (fail = fail + 1);
-            } else {
-              await materiModel.destroy({
-                where: { id: item.id },
-              });
-              success = success + 1;
-            }
-          } catch (err) {
-            fail = fail + 1;
+            success = success + 1;
           }
-        })
-      );
-    }
+        } catch (err) {
+          fail = fail + 1;
+        }
+      })
+    );
 
     res.json({
       status: "success",

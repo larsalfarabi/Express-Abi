@@ -34,6 +34,7 @@ const {
 //   updateNewPassword,
 // } = require("../validators/userValidator");
 const jwtValidateMiddleware = require("../middleware/JwtValidateMiddleware");
+const guruMiddleWare = require("../middleware/guruMiddleWare");
 // const {
 //   createArtikel,
 //   getListArtikel,
@@ -56,11 +57,15 @@ routers.post("/login", loginValidator, validationResultMiddleware, login);
 
 // *--- implementasi JWT(json web token) validate middleware
 routers.use(jwtValidateMiddleware);
-
+routers.use(guruMiddleWare);
 //* ---materi
 routers.get("/materi/list/guru", getListMateri);
 routers.get("/materi/list/siswa", getListMateriSiswa);
-routers.post("/materi/create", createMateriMulti);
+routers.post(
+  "/materi/create",
+
+  createMateriMulti
+);
 routers.put("/materi/update/:id", updateMateri);
 routers.delete("/materi/delete", deleteMateriMulti);
 // *--- user
