@@ -10,7 +10,7 @@ require("dotenv").config;
 async function register(req, res) {
   try {
     const payload = req.body;
-    const { name, email, password } = payload;
+    const { name, email, password, status, jenisKelamin } = payload;
 
     let hashPassword = await bcrypt.hashSync(password, 10);
 
@@ -18,6 +18,8 @@ async function register(req, res) {
       name,
       email,
       password: hashPassword,
+      status,
+      jenisKelamin,
     });
     res.json({
       status: "berhasil",
@@ -324,8 +326,7 @@ async function lupaPasswordEmail(req, res) {
     } else {
       let userExpired = currenToken.expireDate;
       let expire = dayjs(Date());
-      console.log(expire
-      )
+      console.log(expire);
       let difference = expire.diff(userExpired, "hour");
       if (difference !== 0) {
         res.json({

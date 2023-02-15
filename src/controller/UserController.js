@@ -1,3 +1,5 @@
+const { Op } = require("sequelize");
+
 const UserModel = require("../models").user;
 
 // *---- get semua user
@@ -172,6 +174,76 @@ async function deleteUser(req, res) {
     });
   }
 }
+
+async function index(req, res) {
+  try {
+    let { keyword, page, pageSize, orderBy, sortBy, pageActive } = req.query;
+
+    const users = await UserModel.findAndCountAll({
+      attributes: [
+        "id",
+        ["name", "nama"],
+        "email",
+        "password",
+        "status",
+        "jeniKelamin",
+      ],
+      where: {
+        ...(keyword !== undefined && {
+          [Op.or]: [
+            {
+              name: {
+                [Op.like]: `%${keyword}%`,
+              },
+            },
+            {
+              email: {
+                [Op.like]: `%${keyword}%`,
+              },
+            },
+            {
+              jeniKelamin: {
+                [Op.like]: `%${keyword}%`,
+              },
+            },
+          ],
+        }),
+      },
+      include: [
+        {
+          model: models.identitas,
+          require: true,
+          as: "identitas",
+          attributes: ["id", "nama", "alamat", "tempatLahir", "tanggalLahir"],
+        },
+      ],
+      order: [[sortBy, orderBy]],
+      limit: page,
+      offset: pageSize, //* <--- banyak data yang ditampilkan
+    });
+    console.log("page", page);
+    console.log("pageSize", pageSize);
+    res.json({
+      status: "success",
+      msg: "Daftar user ditemukan",
+      data: users,
+      pagination: {
+        page: pageActive,
+        nextPage: page + 1,
+        previousPage: pageActive + 1,
+        pageSize: pageSize,
+        jumlah: users.rows.length,
+        total: users.count,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      status: "fail",
+      msg: "Ada kesalahan",
+    });
+  }
+}
 module.exports = {
   getListUser,
   getListUserById,
@@ -179,4 +251,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  index,
 };

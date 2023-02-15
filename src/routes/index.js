@@ -21,6 +21,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  index,
 } = require("../controller/UserController");
 const validationResultMiddleware = require("../middleware/validationResultMiddleware");
 const createProdukValidator = require("../validators/produkValidator");
@@ -41,7 +42,6 @@ const {
 } = require("../controller/artikelController");
 const routers = express.Router();
 
-
 // *--- AUTH
 routers.post("/register", register);
 routers.post("/login", login);
@@ -58,10 +58,13 @@ routers.put(
   updatePassword
 );
 
+// *---
+
 // *--- user
 routers.get("/user/list", getListUser);
 routers.get("/user/detail/:id", getListUserById);
 routers.get("/user/list/:email", getDetailUserByParams);
+routers.get("/users", index);
 routers.post(
   "/create/user",
   createUserValidator,
