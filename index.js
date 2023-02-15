@@ -6,10 +6,10 @@ const routers = require("./src/routes/index");
 const notFound = require("./src/middleware/404");
 const errorHandling = require("./src/middleware/errorhandling");
 const hostname = "localhost";
-const paginationMiddleWare = require("./src/middleware/paginationMidlleWare");
+const pagination = require("./src/middleware/paginationMidlleWare");
 // parse JSON
 app.use(express.json());
-app.use(paginationMiddleWare);
+app.use(pagination);
 app.use(routers);
 app.use(errorHandling);
 app.use(notFound);

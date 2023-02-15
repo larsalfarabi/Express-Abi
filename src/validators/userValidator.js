@@ -1,8 +1,15 @@
 const { check } = require("express-validator");
 const UserModel = require("../models").user;
 
-const createUserValidator = [
-  check("name").isLength({ min: 1 }).withMessage("nama wajib diisi"),
+const loginValidator = [
+  check("email").isEmail().withMessage("gunakan format email"),
+  check("password")
+    .isLength({ min: 8 })
+    .withMessage("password must be at least 8 characters"),
+];
+
+const registerValidator = [
+  check("nama").isLength({ min: 1 }).withMessage("nama wajib diisi"),
   check("email")
     .isEmail()
     .withMessage("gunakan format email")
@@ -17,14 +24,9 @@ const createUserValidator = [
         }
       });
     }),
+  check("password")
+    .isLength({ min: 8 })
+    .withMessage("password must be at least 8 characters"),
 ];
 
-const updateUserValidator = [
-  check("name").isLength({ min: 1 }).withMessage("nama wajib diisi"),
-];
-
-const updateNewPassword = [
-  check('new_password').isLength({min: 8}).withMessage('password harus lebih dari 8')
-]
-
-module.exports = { createUserValidator, updateUserValidator , updateNewPassword};
+module.exports = { registerValidator, loginValidator };

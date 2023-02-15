@@ -1,4 +1,4 @@
-const paginationMiddleWare = (req, res, next) => {
+const pagination = (req, res, next) => {
   let pageSize = parseInt(req.query.pageSize);
   let page = parseInt(req.query.page);
   let offset = 0;
@@ -18,4 +18,4 @@ const paginationMiddleWare = (req, res, next) => {
   next();
 };
 
-module.exports = paginationMiddleWare;
+module.exports = pagination;
