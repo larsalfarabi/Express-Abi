@@ -11,23 +11,23 @@ const {
   login,
   updatePassword,
   lupaPassword,
-  lupaPasswordTugas,
+  // lupaPasswordTugas,
   lupaPasswordEmail,
 } = require("../controller/authController");
 const {
-  getListUser,
-  getListUserById,
-  getDetailUserByParams,
-  createUser,
-  updateUser,
-  deleteUser,
+  // getListUser,
+  // getListUserById,
+  // getDetailUserByParams,
+  // createUser,
+  // updateUser,
+  // deleteUser,
   index,
 } = require("../controller/UserController");
 const validationResultMiddleware = require("../middleware/validationResultMiddleware");
 const createProdukValidator = require("../validators/produkValidator");
 const {
-  createUserValidator,
-  updateUserValidator,
+  // createUserValidator,
+  // updateUserValidator,
   updateNewPassword,
 } = require("../validators/userValidator");
 const jwtValidateMiddleware = require("../middleware/JwtValidateMiddleware");
@@ -61,23 +61,23 @@ routers.put(
 // *---
 
 // *--- user
-routers.get("/user/list", getListUser);
-routers.get("/user/detail/:id", getListUserById);
-routers.get("/user/list/:email", getDetailUserByParams);
+// routers.get("/user/list", getListUser);
+// routers.get("/user/detail/:id", getListUserById);
+// routers.get("/user/list/:email", getDetailUserByParams);
 routers.get("/users", index);
-routers.post(
-  "/create/user",
-  createUserValidator,
-  validationResultMiddleware,
-  createUser
-);
-routers.put(
-  "/user/update/:id",
-  updateUserValidator,
-  validationResultMiddleware,
-  updateUser
-);
-routers.delete("/user/delete/:id", deleteUser);
+// routers.post(
+//   "/create/user",
+//   createUserValidator,
+//   validationResultMiddleware,
+//   createUser
+// );
+// routers.put(
+//   "/user/update/:id",
+//   updateUserValidator,
+//   validationResultMiddleware,
+//   updateUser
+// );
+// routers.delete("/user/delete/:id", deleteUser);
 
 // *--- artikel
 routers.get("/artikel/list", getListArtikel);

@@ -25,6 +25,7 @@ module.exports = {
       },
       alamat: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       tempatLahir: {
         type: Sequelize.STRING,
@@ -32,8 +33,8 @@ module.exports = {
       },
       tanggalLahir: {
         type: Sequelize.DATE,
+        allowNull: false,
       },
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const identitas = require("./identitas");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     /**
